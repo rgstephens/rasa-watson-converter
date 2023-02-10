@@ -7,3 +7,9 @@ This is a fork of a [script](https://github.com/souvikg10/rasa_nlu/blob/watson-e
 ```sh
 python watson_converter.py customer-care.json
 ```
+
+## Sample Watson JSON
+
+The sample json files come from github repos (search using [github](https://github.com/search?q=watson+%22workspace_id%22+%22learning_opt_out%22+language%3Ajson&type=code))
+
+- [customer-care](https://github.com/watson-developer-cloud/assistant-skill-analysis/blob/master/tests/resources/test_workspaces/skill-Customer-Care-Sample.json)

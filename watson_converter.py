@@ -61,6 +61,7 @@ class WatsonTrainingDataConverter(TrainingDataConverter):
             if "value" in s and "synonyms" in s and s["synonyms"] is not None:
                 for synonym in s["synonyms"]:
                     entity_synonyms[synonym] = s["value"]
+        return entity_synonyms
 
     def get_training_data(self, js: Dict[Text, Any], **kwargs: Any) -> TrainingData:
         """Loads training data stored in the IBM Watson data format."""
