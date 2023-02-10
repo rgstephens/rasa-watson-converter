@@ -4,6 +4,7 @@ import sys
 from rasa.shared.utils.io import read_json_file, write_yaml
 from typing import Any, Dict, List, Text, Optional, Union
 from pathlib import Path
+from rasa.shared.core.domain import Domain
 from rasa.shared.nlu.constants import INTENT, ENTITIES, TEXT
 from rasa.shared.nlu.training_data.util import transform_entity_synonyms
 from rasa.shared.nlu.training_data.training_data import TrainingData
@@ -104,17 +105,18 @@ class RasaYAMLWriterDomain(RasaYAMLWriter):
 
         domain_items = []
         domain_items.extend(cls.process_domain_intents(training_data))
-        # domain_items.extend(cls.process_synonyms(training_data))
-        # domain_items.extend(cls.process_regexes(training_data))
-        # domain_items.extend(cls.process_lookup_tables(training_data))
 
         if not any([domain_items, training_data.responses]):
             return None
 
+        # response_items = sorted(list(training_data.responses))
+        # response_items = sorted(list(training_data.responses))
         if training_data.responses:
-            result[KEY_RESPONSES] = Domain.get_responses_with_multilines(
-                training_data.responses
-            )
+            result[KEY_RESPONSES] = training_data.responses
+        # if training_data.responses:
+        #     result[KEY_RESPONSES] = Domain.get_responses_with_multilines(
+        #         training_data.response_examples
+        #     )
 
         return result
 
@@ -188,8 +190,12 @@ class WatsonTrainingDataConverter(TrainingDataConverter):
         for e in all_entities:
             entity = list(e.keys())[0]
             training_data.entities.add(entity)
-        # training_data["entities"] = entities
         RasaYAMLWriterDomain().dump(output_nlu_path, training_data)
+        training_data.responses = self._get_all_responses(js)
+        # for r in response_examples:
+        #     training_data.response_examples.append(r)
+        # training_data.responses = responses
+        # training_data["entities"] = entities
         RasaYAMLWriterDomain().dump_domain(output_domain_path, training_data)
 
     def _transform_entity_synonyms(
@@ -293,6 +299,41 @@ class WatsonTrainingDataConverter(TrainingDataConverter):
                         {"value": val.get("value"), "synonyms": val.get("synonyms"),}
                     )
         return entity_synonyms
+
+    @staticmethod
+    def _get_all_responses(js: Dict[Text, Any]) -> List:
+        # response: OrderedDict[Text, Any] = OrderedDict()
+        responses = {}
+        unnamed_counter = 1
+        dialog_nodes = js.get("dialog_nodes")
+        # responses:
+        #   utter_hi:
+        #     - text: Oct 15, 2022
+        # [{ "utter_hi": [{ "text": "hi there"}, "text": "hello"] }]
+        for node in dialog_nodes:
+            try:
+                values = node['output']['generic'][0]['values']
+                if len(values):
+                    if "title" in node:
+                        response_name = node["title"].lower().replace(" ", "_")
+                    else:
+                        response_name = f"utter_{str(unnamed_counter)}"
+                        unnamed_counter += 1
+                    # responses.add(response_name)
+                    response_examples = []
+                    for v in values:
+                        response_examples.append({"text": v["text"]})
+                        # response_examples.append({"response": response_name, "text": v["text"]})
+                    responses.update({ response_name: response_examples})
+                    # responses.add({ response_name: response_examples})
+            except KeyError:
+                pass
+            # response["response"] = response_name
+            # x = RasaYAMLWriter._render_training_examples_as_text(
+            #         responses
+            #     )
+        return responses
+
 
     @staticmethod
     def _check_watson_file(js: Dict[Text, Any]) -> bool:
