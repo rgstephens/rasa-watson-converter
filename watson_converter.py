@@ -1,23 +1,155 @@
 import logging
 import os
 import sys
-from rasa.shared.utils.io import read_json_file
-from typing import Any, Dict, List, Text, Optional
+from rasa.shared.utils.io import read_json_file, write_yaml
+from typing import Any, Dict, List, Text, Optional, Union
 from pathlib import Path
 from rasa.shared.nlu.constants import INTENT, ENTITIES, TEXT
 from rasa.shared.nlu.training_data.util import transform_entity_synonyms
 from rasa.shared.nlu.training_data.training_data import TrainingData
 from rasa.shared.nlu.training_data.message import Message
-from rasa.utils.converter import TrainingDataConverter
 from rasa.shared.nlu.training_data.formats.rasa_yaml import RasaYAMLWriter
+from rasa.shared.nlu.training_data.formats.readerwriter import (
+    TrainingDataReader,
+    TrainingDataWriter,
+)
+from rasa.utils.converter import TrainingDataConverter
+from ruamel.yaml import StringIO
+from collections import OrderedDict
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 
+KEY_DOMAIN = "domain"
+KEY_INTENTS = "intents"
+KEY_ENTITIES = "entities"
+KEY_RESPONSES = "responses"
+
+class RasaYAMLWriterDomain(RasaYAMLWriter):
+    """Extends RasaYAMLWriter to also create domain file"""
+    from rasa.shared.utils.io import write_yaml
+
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod
+    def process_domain_examples_by_key(
+        training_examples: Dict[Text, List[Union[Dict, Text]]],
+        key_name: Text,
+    ) -> List[OrderedDict]:
+        """Prepares training examples  to be written to YAML.
+
+        This can be any NLU training data (intent examples, lookup tables, etc.)
+
+        Args:
+            training_examples: Multiple training examples. Mappings in case additional
+                values were specified for an example (e.g. metadata) or just the plain
+                value.
+            key_name: The top level key which the examples belong to (e.g. `intents`)
+
+        Returns:
+            NLU training data examples prepared for writing to YAML.
+        """
+        intents = []
+
+        # for intent_name in training_examples.items():
+        #     intent: OrderedDict[Text, Any] = OrderedDict()
+        #     intent[key_name] = intent_name
+        #     intents.append(intent)
+        intents = ["intent1", "intent2"]
+
+        return intents
+
+    @classmethod
+    def process_domain_intents(cls, training_data: "TrainingData") -> List[OrderedDict]:
+        """Serializes the intents."""
+        return RasaYAMLWriterDomain.process_domain_examples_by_key(
+            cls.prepare_training_examples(training_data),
+            KEY_INTENTS,
+        )
+
+    @classmethod
+    def domain_data_to_dict(
+        cls, training_data: "TrainingData"
+    ) -> Optional[OrderedDict]:
+        """Represents NLU training data to a dict/list structure ready to be
+        serialized as YAML.
+
+        Args:
+            training_data: `TrainingData` to convert.
+
+        Returns:
+            `OrderedDict` containing all training data.
+        """
+        from rasa.shared.utils.validation import KEY_TRAINING_DATA_FORMAT_VERSION
+        from ruamel.yaml.scalarstring import DoubleQuotedScalarString
+        from rasa.shared.constants import (
+            DOCS_URL_TRAINING_DATA,
+            LATEST_TRAINING_DATA_FORMAT_VERSION,
+        )
+
+        result: OrderedDict[Text, Any] = OrderedDict()
+        result[KEY_TRAINING_DATA_FORMAT_VERSION] = DoubleQuotedScalarString(
+            LATEST_TRAINING_DATA_FORMAT_VERSION
+        )
+
+        intent_items = sorted(list(training_data.intents))
+        if intent_items:
+            result[KEY_INTENTS] = intent_items
+
+        entity_items = sorted(list(training_data.entities))
+        if entity_items:
+            result[KEY_ENTITIES] = entity_items
+
+        domain_items = []
+        domain_items.extend(cls.process_domain_intents(training_data))
+        # domain_items.extend(cls.process_synonyms(training_data))
+        # domain_items.extend(cls.process_regexes(training_data))
+        # domain_items.extend(cls.process_lookup_tables(training_data))
+
+        if not any([domain_items, training_data.responses]):
+            return None
+
+        if training_data.responses:
+            result[KEY_RESPONSES] = Domain.get_responses_with_multilines(
+                training_data.responses
+            )
+
+        return result
+
+    def dump_domain(
+        self, target: Union[Text, Path, StringIO], training_data: "TrainingData"
+    ) -> None:
+        """Writes training data into a file in a YAML format.
+
+        Args:
+            target: Name of the target object to write the YAML to.
+            training_data: TrainingData object.
+        """
+        result = self.domain_data_to_dict(training_data)
+
+        if result:
+            write_yaml(result, target, True)
 
 class WatsonTrainingDataConverter(TrainingDataConverter):
     """Reads Watson training data and train a Rasa NLU model."""
+
+    def _generate_path_for_converted_training_data(
+        cls, source_file_path: Path, output_directory: Path
+    ) -> Path:
+        """Generates path for a training data file converted to YAML format.
+
+        Args:
+            source_file_path: Path to the original file.
+            output_directory: Path to the target directory.
+
+        Returns:
+            Path to the target converted training data file.
+        """
+        return (
+            output_directory / f"{source_file_path.stem}.yml", output_directory / f"{source_file_path.stem}_domain.yml"
+        )
 
     def filter(self, source_path: Path) -> bool:
         """Checks if the given training data file Watson NLU Data.
@@ -46,12 +178,19 @@ class WatsonTrainingDataConverter(TrainingDataConverter):
         Returns:
             yaml file written to the output path
         """
-        output_nlu_path = self.generate_path_for_converted_training_data_file(
+        output_nlu_path, output_domain_path = self._generate_path_for_converted_training_data(
             source_path, output_path
         )
         js = read_json_file(source_path)
         training_data = self.get_training_data(js)
-        RasaYAMLWriter().dump(output_nlu_path, training_data)
+        all_entities = self._list_all_entities(js)
+        # entities = set()
+        for e in all_entities:
+            entity = list(e.keys())[0]
+            training_data.entities.add(entity)
+        # training_data["entities"] = entities
+        RasaYAMLWriterDomain().dump(output_nlu_path, training_data)
+        RasaYAMLWriterDomain().dump_domain(output_domain_path, training_data)
 
     def _transform_entity_synonyms(
         self, synonyms: List[Dict[Text, Any]], known_synonyms: Optional[Dict[Text, Any]] = None
