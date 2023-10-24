@@ -1,0 +1,23 @@
+version: "3.1"
+intents:
+- Cancel
+- Customer_Care_Appointments
+- Customer_Care_Store_Hours
+- Customer_Care_Store_Location
+- General_Connect_to_Agent
+- General_Greetings
+- Goodbye
+- Help
+- Thanks
+entities:
+- holiday
+- landmark
+- phone
+- reply
+- specialist
+- sys-date
+- sys-location
+- sys-number
+- sys-person
+- sys-time
+- zip_code

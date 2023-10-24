@@ -1,0 +1,307 @@
+version: "3.1"
+nlu:
+- intent: Customer_Care_Store_Hours
+  examples: |
+    - Are you open on Sunday
+    - Hours of operation
+    - What time do you close today
+    - what time do you close on Sunday
+    - What time do you open on Saturdays
+    - What time do you close
+    - when do you close
+    - will you be open Memorial day
+    - will you open for christmas
+    - what are your hours
+    - What time is your store open on saturday?
+    - What time do stores close?
+    - What time does the central manchester store shut on a saturday?
+    - What time are you closing today?
+    - What is the opening time for the washington store?
+    - What are your hous?
+    - What are ur opening hours?
+    - What are the saturday opening times for the local store?
+    - What are the hours of operation?
+    - What are the business hours of the store nearest to me?
+    - Are you open on sundays, and if so what are the hours?
+    - Are you open on bank [independence day](holiday)s?
+    - Are you open on bank [labor day](holiday)s?
+    - Are you open on bank [christmas eve](holiday)s?
+    - Are you open on bank [valentine's day](holiday)s?
+    - Are you open on bank [memorial day](holiday)s?
+    - Are you open on bank [christmas](holiday)s?
+    - Are you open on bank [halloween](holiday)s?
+    - Are you open on bank [thanksgiving](holiday)s?
+    - Are you open on bank [new years](holiday)s?
+    - Are you open on bank [new years eve](holiday)s?
+    - Are you open during thanksgiving?
+    - Are the stores open early?
+    - will you open on christmas
+    - how late y'all stay up till
+    - how late are you there
+    - Are you closing early today
+    - Are you closed new Year's eve
+    - how early do you open on Saturdays
+    - Is the branch open now?
+    - How long are you open?
+    - How early do you open?
+    - Does the store in the city center opens till 8pm on weekends?
+    - Can you tell me how late the stores are open till?
+    - At what hour can I swing by?
+    - how late are you open tonight
+    - how late are you open
+- intent: Thanks
+  examples: |
+    - i appreciate it
+    - that's nice of you
+    - thank you very much
+    - thx
+    - thank you
+    - thanks
+    - much appreciated
+    - many thanks
+- intent: Customer_Care_Appointments
+  examples: |
+    - Can I book an in person session
+    - i'd like to make an appointment
+    - can you make an appointment for me
+    - can i make an appointment
+    - do you have availability next week
+    - can i book for tonight
+    - are you available on tuesday
+    - When can I meet with one of your employees at your store?
+    - What time can I meet the staff?
+    - Want to change my visit
+    - Store appointment
+    - Set up an appt
+    - Make an appointment
+    - i'd like to come in for an appointment
+    - I prefer a face to face visit
+    - I want to talk in person with someone about my case
+    - I would like to discuss my situation face to face
+    - I would like to make an appointment to visit the nearest store to my location.
+    - Could I speak to someone in the store next tuesday?
+- intent: Customer_Care_Store_Location
+  examples: |
+    - What is the store near my zip code?
+    - What is the closest store to my address?
+    - Looking for a location
+    - I want to know about a store
+    - I need help with find a store
+    - I'd like to go to a store
+    - Go to your company
+    - how do i find you
+    - what is the address
+    - where are you
+    - what's your location
+    - give me directions
+    - which cross streets are you on
+    - What is the nearest branch?
+    - how do i get to your business
+    - Where are you located?
+    - Where is?
+    - Where is your office?
+    - Find store
+    - how do i get to your place
+    - where are you located
+    - can you give me directions
+    - location please
+- intent: Cancel
+  examples: |
+    - i don't want a table anymore anymore
+    - cancel the request
+    - i changed my mind
+    - cancel that
+    - never mind
+    - forget it
+    - nevermind
+- intent: General_Connect_to_Agent
+  examples: |
+    - Can I speak with somebody?
+    - representative
+    - talk to a human
+    - Put me through to someone
+    - Pls connect
+    - Please let me talk to a human being.
+    - Please connect me to a live agent
+    - Operator please
+    - Please assist me to get to an agent
+    - Need help from human
+    - I would like to speak to someone
+    - I would like to speak to a human
+    - I want to talk to a person
+    - I want an agent to help me
+    - I want a manager
+    - I want agent
+    - I need to speak to a representative. How would I go about doing so?
+    - Is there anyone there I can actually talk to for real?
+    - I don't want to talk to you
+    - I don't want to talk to a bot.
+    - How can I skip the recorded menu and go straight to a live person?
+    - Hi can you transfer me
+    - Do not want a robot?
+    - Customer service representative please.
+    - Could you please transfer me to your master?
+    - Contact person
+    - Connect me to a live operator please.
+    - Can you connect me with a real person?
+    - Can you assist me to connect to an agent?
+    - Can I talk to someone?
+    - Can I speak to an advisor?
+    - Can I speak to a live person?
+    - Can I speak to a human please?
+    - Can I connect to an agent?
+    - Call agent
+    - A real agent, please.
+    - I want to talk to the manager
+    - I want to speak to a human
+    - call the manager
+    - get me a person
+    - I dont want to talk to a computer
+    - I don't want to speak with a robot
+    - Send me to an agent
+    - Where is the closest agent?
+    - Yes, take me to a real person
+    - Agent help
+    - I want to speak to a person
+- intent: Goodbye
+  examples: |
+    - bye
+    - so long
+    - ciao
+    - arrivederci
+    - see ya
+    - good bye
+- intent: General_Greetings
+  examples: |
+    - Hey you
+    - Hey twin
+    - How is it going?
+    - How have you been?
+    - How are you today?
+    - How are things going?
+    - Hi there
+    - Hi advisor
+    - Hey there
+    - Hey there all
+    - Hey how are you doing
+    - Hello I am looking for some help here
+    - Hello
+    - Hello Agent
+    - Have you been well?
+    - Greetings
+    - Good to see you
+    - Good morning
+    - Good evening
+    - Good day
+    - hiya
+    - yo
+    - hi
+    - You there
+    - Who is this?
+    - What's up?
+    - What's new?
+    - Ok take me back
+    - Looking good eve
+    - How r u?
+- intent: Help
+  examples: |
+    - help me
+    - i need assistance
+    - can you help
+    - can you assist me
+    - help
+    - help me decide
+- synonym: independence day
+  examples: |
+    - 7/4
+    - fourth of july
+    - july 4
+    - july 4th
+    - july fourth
+- synonym: christmas eve
+  examples: |
+    - x mas eve
+    - x-mas eve
+    - xmas eve
+- synonym: valentine's day
+  examples: |
+    - valentine day
+    - valentines day
+- synonym: christmas
+  examples: |
+    - christmas day
+    - x man day
+    - xmas
+    - x mas
+    - x-mas
+    - x-mas day
+    - xmas day
+- synonym: thanksgiving
+  examples: |
+    - turkey day
+- synonym: new years
+  examples: |
+    - 1/1
+    - jan 1
+    - jan 1st
+    - jan first
+    - january 1
+    - january 1st
+    - january first
+    - new year
+    - new year day
+    - new years day
+- synonym: new years eve
+  examples: |
+    - 12-31
+    - 12/31
+    - dec 31
+    - dec 31st
+    - new year's eve
+- synonym: Derrik
+  examples: |
+    - derek
+    - derik
+    - derrik
+    - derrick
+- synonym: Barbara
+  examples: |
+    - barbra
+- synonym: Nicholas
+  examples: |
+    - nick
+- synonym: Robert
+  examples: |
+    - bob
+- synonym: yes
+  examples: |
+    - definitely
+    - go for it
+    - let's do it
+    - ok
+    - please
+    - sure
+    - why not
+    - yeah
+    - yes
+    - you bet
+    - you betcha
+    - yep
+- synonym: no
+  examples: |
+    - definitely not
+    - don't think so
+    - dont think so
+    - i think not
+    - nope
+    - not at this time
+    - not now
+- synonym: empire state building
+  examples: |
+    - empire state
+    - emprire state
+- synonym: times square
+  examples: |
+    - time sqaure
+    - time square
+    - times sqaure
