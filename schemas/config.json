@@ -1,0 +1,152 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/config",
+    "definitions": {
+        "config": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/configMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping"
+            ],
+            "title": "config"
+        },
+        "configMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/Version"
+                },
+                "language": {
+                    "$ref": "#/definitions/AssistantID"
+                },
+                "assistant_id": {
+                    "$ref": "#/definitions/AssistantID"
+                },
+                "pipeline": {
+                    "$ref": "#/definitions/Pipeline"
+                },
+                "policies": {
+                    "$ref": "#/definitions/Pipeline"
+                },
+                "spaces": {
+                    "$ref": "#/definitions/Pipeline"
+                }
+            },
+            "required": [
+                "assistant_id",
+                "language",
+                "pipeline",
+                "policies",
+                "spaces",
+                "version"
+            ],
+            "title": "configMapping"
+        },
+        "AssistantID": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "required",
+                "type"
+            ],
+            "title": "AssistantID"
+        },
+        "Pipeline": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Sequence"
+                    }
+                }
+            },
+            "required": [
+                "required",
+                "sequence",
+                "type"
+            ],
+            "title": "Pipeline"
+        },
+        "Sequence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/SequenceMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "Sequence"
+        },
+        "SequenceMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/AssistantID"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "SequenceMapping"
+        },
+        "Version": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "allowempty",
+                "required",
+                "type"
+            ],
+            "title": "Version"
+        }
+    }
+}

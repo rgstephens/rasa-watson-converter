@@ -1,0 +1,792 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/domain",
+    "definitions": {
+        "domain": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/domainMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping"
+            ],
+            "title": "domain"
+        },
+        "domainMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "version": {
+                    "$ref": "#/definitions/Version"
+                },
+                "intents": {
+                    "$ref": "#/definitions/Intents"
+                },
+                "entities": {
+                    "$ref": "#/definitions/Entities"
+                },
+                "actions": {
+                    "$ref": "#/definitions/Actions"
+                },
+                "responses": {
+                    "$ref": "#/definitions/Responses"
+                },
+                "slots": {
+                    "$ref": "#/definitions/Slots"
+                },
+                "forms": {
+                    "$ref": "#/definitions/Forms"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config"
+                },
+                "session_config": {
+                    "$ref": "#/definitions/SessionConfig"
+                }
+            },
+            "required": [
+                "actions",
+                "config",
+                "entities",
+                "forms",
+                "intents",
+                "responses",
+                "session_config",
+                "slots",
+                "version"
+            ],
+            "title": "domainMapping"
+        },
+        "Actions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "matching": {
+                    "$ref": "#/definitions/Matching"
+                },
+                "seq": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Seq"
+                    }
+                }
+            },
+            "required": [
+                "matching",
+                "seq",
+                "type"
+            ],
+            "title": "Actions"
+        },
+        "Seq": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/SeqMapping"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "Seq"
+        },
+        "SeqMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "regex;([A-Za-z] )": {
+                    "$ref": "#/definitions/PurpleRegexAZaZ"
+                }
+            },
+            "required": [
+                "regex;([A-Za-z] )"
+            ],
+            "title": "SeqMapping"
+        },
+        "PurpleRegexAZaZ": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/PurpleMapping"
+                }
+            },
+            "required": [
+                "mapping",
+                "type"
+            ],
+            "title": "PurpleRegexAZaZ"
+        },
+        "PurpleMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "send_domain": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "send_domain"
+            ],
+            "title": "PurpleMapping"
+        },
+        "Config": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/ConfigMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "Config"
+        },
+        "ConfigMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "store_entities_as_slots": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "store_entities_as_slots"
+            ],
+            "title": "ConfigMapping"
+        },
+        "Entities": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "matching": {
+                    "$ref": "#/definitions/Matching"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EntitiesSequence"
+                    }
+                }
+            },
+            "required": [
+                "matching",
+                "sequence",
+                "type"
+            ],
+            "title": "Entities"
+        },
+        "EntitiesSequence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/FluffyMapping"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "EntitiesSequence"
+        },
+        "FluffyMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "roles": {
+                    "$ref": "#/definitions/Groups"
+                },
+                "groups": {
+                    "$ref": "#/definitions/Groups"
+                }
+            },
+            "required": [
+                "groups",
+                "roles"
+            ],
+            "title": "FluffyMapping"
+        },
+        "Groups": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/StoreEntitiesAsSlots"
+                    }
+                }
+            },
+            "required": [
+                "sequence",
+                "type"
+            ],
+            "title": "Groups"
+        },
+        "StoreEntitiesAsSlots": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/Matching"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "StoreEntitiesAsSlots"
+        },
+        "Forms": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/FormsMapping"
+                }
+            },
+            "required": [
+                "mapping",
+                "required",
+                "type"
+            ],
+            "title": "Forms"
+        },
+        "FormsMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "regex;([A-Za-z] )": {
+                    "$ref": "#/definitions/FluffyRegexAZaZ"
+                }
+            },
+            "required": [
+                "regex;([A-Za-z] )"
+            ],
+            "title": "FormsMapping"
+        },
+        "FluffyRegexAZaZ": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/TentacledMapping"
+                }
+            },
+            "required": [
+                "mapping",
+                "type"
+            ],
+            "title": "FluffyRegexAZaZ"
+        },
+        "TentacledMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "required_slots": {
+                    "$ref": "#/definitions/Version"
+                },
+                "ignored_intents": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "ignored_intents",
+                "required_slots"
+            ],
+            "title": "TentacledMapping"
+        },
+        "Version": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/StoreEntitiesAsSlots"
+                    }
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "required",
+                "type"
+            ],
+            "title": "Version"
+        },
+        "Intents": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/IntentsSequence"
+                    }
+                }
+            },
+            "required": [
+                "sequence",
+                "type"
+            ],
+            "title": "Intents"
+        },
+        "IntentsSequence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/StickyMapping"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "IntentsSequence"
+        },
+        "StickyMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "use_entities": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "ignore_entities": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "ignore_entities",
+                "use_entities"
+            ],
+            "title": "StickyMapping"
+        },
+        "Responses": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "include": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "include"
+            ],
+            "title": "Responses"
+        },
+        "SessionConfig": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/SessionConfigMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "SessionConfig"
+        },
+        "SessionConfigMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "session_expiration_time": {
+                    "$ref": "#/definitions/SessionExpirationTime"
+                },
+                "carry_over_slots_to_new_session": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "carry_over_slots_to_new_session",
+                "session_expiration_time"
+            ],
+            "title": "SessionConfigMapping"
+        },
+        "SessionExpirationTime": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "range": {
+                    "$ref": "#/definitions/Range"
+                }
+            },
+            "required": [
+                "range",
+                "type"
+            ],
+            "title": "SessionExpirationTime"
+        },
+        "Range": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "min": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "min"
+            ],
+            "title": "Range"
+        },
+        "Slots": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/SlotsMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "Slots"
+        },
+        "SlotsMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "regex;([A-Za-z] )": {
+                    "$ref": "#/definitions/TentacledRegexAZaZ"
+                }
+            },
+            "required": [
+                "regex;([A-Za-z] )"
+            ],
+            "title": "SlotsMapping"
+        },
+        "TentacledRegexAZaZ": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/IndigoMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "TentacledRegexAZaZ"
+        },
+        "IndigoMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "influence_conversation": {
+                    "$ref": "#/definitions/InfluenceConversation"
+                },
+                "type": {
+                    "$ref": "#/definitions/InfluenceConversation"
+                },
+                "values": {
+                    "$ref": "#/definitions/Version"
+                },
+                "min_value": {
+                    "$ref": "#/definitions/InfluenceConversation"
+                },
+                "max_value": {
+                    "$ref": "#/definitions/InfluenceConversation"
+                },
+                "initial_value": {
+                    "$ref": "#/definitions/InfluenceConversation"
+                },
+                "mappings": {
+                    "$ref": "#/definitions/Mappings"
+                }
+            },
+            "required": [
+                "influence_conversation",
+                "initial_value",
+                "mappings",
+                "max_value",
+                "min_value",
+                "type",
+                "values"
+            ],
+            "title": "IndigoMapping"
+        },
+        "InfluenceConversation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "required",
+                "type"
+            ],
+            "title": "InfluenceConversation"
+        },
+        "Mappings": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MappingsSequence"
+                    }
+                }
+            },
+            "required": [
+                "allowempty",
+                "required",
+                "sequence",
+                "type"
+            ],
+            "title": "Mappings"
+        },
+        "MappingsSequence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "allowempty": {
+                    "type": "boolean"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/IndecentMapping"
+                }
+            },
+            "required": [
+                "allowempty",
+                "mapping",
+                "type"
+            ],
+            "title": "MappingsSequence"
+        },
+        "IndecentMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "intent": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "not_intent": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "entity": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "role": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "group": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "value": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "action": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                },
+                "conditions": {
+                    "$ref": "#/definitions/Conditions"
+                }
+            },
+            "required": [
+                "action",
+                "conditions",
+                "entity",
+                "group",
+                "intent",
+                "not_intent",
+                "role",
+                "type",
+                "value"
+            ],
+            "title": "IndecentMapping"
+        },
+        "Conditions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ConditionsSequence"
+                    }
+                }
+            },
+            "required": [
+                "sequence",
+                "type"
+            ],
+            "title": "Conditions"
+        },
+        "ConditionsSequence": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "mapping": {
+                    "$ref": "#/definitions/HilariousMapping"
+                }
+            },
+            "required": [
+                "mapping",
+                "type"
+            ],
+            "title": "ConditionsSequence"
+        },
+        "HilariousMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "active_loop": {
+                    "$ref": "#/definitions/ActiveLoop"
+                },
+                "requested_slot": {
+                    "$ref": "#/definitions/StoreEntitiesAsSlots"
+                }
+            },
+            "required": [
+                "active_loop",
+                "requested_slot"
+            ],
+            "title": "HilariousMapping"
+        },
+        "ActiveLoop": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/Matching"
+                },
+                "nullable": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "nullable",
+                "type"
+            ],
+            "title": "ActiveLoop"
+        },
+        "Matching": {
+            "type": "string",
+            "enum": [
+                "bool",
+                "str",
+                "any"
+            ],
+            "title": "Matching"
+        }
+    }
+}
