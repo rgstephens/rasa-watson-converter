@@ -1,0 +1,189 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "nlu": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "intent": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "metadata": {},
+                "examples": {
+                  "type": "string"
+                }
+              },
+              "required": ["intent", "examples"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "intent": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "metadata": {},
+                "examples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "metadata": {}
+                    },
+                    "required": ["text"]
+                  }
+                }
+              },
+              "required": ["intent", "examples"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "synonym": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "examples": {
+                  "type": "string"
+                }
+              },
+              "required": ["synonym", "examples"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "regex": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "examples": {
+                  "type": "string"
+                }
+              },
+              "required": ["regex", "examples"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "lookup": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "examples": {
+                  "type": "string"
+                }
+              },
+              "required": ["lookup", "examples"]
+            }
+          ]
+        }
+      },
+      "responses": {
+        "type": "object",
+        "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["text"],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "custom": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "buttons": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "payload": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "button_type": {
+                  "type": "string"
+                },
+                "quick_replies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string"
+                      },
+                      "payload": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "attachment": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "elements": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                },
+                "channel": {
+                  "type": "string"
+                },
+                "metadata": {},
+                "condition": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {}
+                    },
+                    "required": ["type", "name"],
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+ 
+    }
+    },
+    "additionalProperties": false
+  }
+  
