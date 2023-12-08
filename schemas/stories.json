@@ -1,794 +1,213 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/stories",
-    "definitions": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "minLength": 1
+        },
         "stories": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "allowempty": {
-                    "type": "boolean"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/storiesMapping"
-                }
-            },
-            "required": [
-                "allowempty",
-                "mapping"
-            ],
-            "title": "stories"
-        },
-        "storiesMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "version": {
-                    "$ref": "#/definitions/Version"
-                },
-                "stories": {
-                    "$ref": "#/definitions/Stories"
-                },
-                "rules": {
-                    "$ref": "#/definitions/Rules"
-                },
-                "regex;(.*)": {
-                    "$ref": "#/definitions/Regex"
-                }
-            },
-            "required": [
-                "regex;(.*)",
-                "rules",
-                "stories",
-                "version"
-            ],
-            "title": "storiesMapping"
-        },
-        "Regex": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/MatchingEnum"
-                }
-            },
-            "required": [
-                "type"
-            ],
-            "title": "Regex"
-        },
-        "Rules": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/RulesSequence"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "story": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "metadata": {},
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/definitions/intentAndEntities"
+                                },
+                                {
+                                    "$ref": "#/definitions/activeLoop"
+                                },
+                                {
+                                    "$ref": "#/definitions/action"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "bot": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+                                    },
+                                    "required": [
+                                        "bot"
+                                    ]
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "stack": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "op": {
+                                                        "type": "string",
+                                                        "minLength": 1
+                                                    },
+                                                    "path": {
+                                                        "type": "string",
+                                                        "minLength": 1
+                                                    },
+                                                    "value": {}
+                                                },
+                                                "required": [
+                                                    "op",
+                                                    "path"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "stack"
+                                    ]
+                                },
+                                {
+                                    "$ref": "#/definitions/slotWasSet"
+                                }
+                            ]
+                        }
                     }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "Rules"
+                },
+                "required": [
+                    "story",
+                    "steps"
+                ]
+            }
         },
-        "RulesSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/PurpleMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "RulesSequence"
-        },
-        "PurpleMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "rule": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "metadata": {
-                    "$ref": "#/definitions/Metadata"
-                },
-                "steps": {
-                    "$ref": "#/definitions/PurpleSteps"
-                },
-                "condition": {
-                    "$ref": "#/definitions/Condition"
-                },
-                "conversation_start": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "wait_for_user_input": {
-                    "$ref": "#/definitions/ConversationStart"
-                }
-            },
-            "required": [
-                "condition",
-                "conversation_start",
-                "metadata",
-                "rule",
-                "steps",
-                "wait_for_user_input"
-            ],
-            "title": "PurpleMapping"
-        },
-        "Condition": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ConditionSequence"
+        "rules": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "rule": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "metadata": {},
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/definitions/intentAndEntities"
+                                },
+                                {
+                                    "$ref": "#/definitions/action"
+                                },
+                                {
+                                    "$ref": "#/definitions/activeLoop"
+                                },
+                                {
+                                    "$ref": "#/definitions/slotWasSet"
+                                }
+                            ]
+                        }
+                    },
+                    "condition": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/definitions/activeLoop"
+                                },
+                                {
+                                    "$ref": "#/definitions/slotWasSet"
+                                }
+                            ]
+                        }
+                    },
+                    "conversation_start": {
+                        "type": "boolean"
+                    },
+                    "wait_for_user_input": {
+                        "type": "boolean"
                     }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "Condition"
-        },
-        "ConditionSequence": {
+                },
+                "required": [
+                    "rule",
+                    "steps"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "intentAndEntities": {
             "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/FluffyMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "ConditionSequence"
-        },
-        "FluffyMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "active_loop": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "slot_was_set": {
-                    "$ref": "#/definitions/SlotWasSet"
-                }
-            },
-            "required": [],
-            "title": "FluffyMapping"
-        },
-        "ConversationStart": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "allowempty": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "allowempty",
-                "type"
-            ],
-            "title": "ConversationStart"
-        },
-        "SlotWasSet": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/SlotWasSetSequence"
-                    }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "SlotWasSet"
-        },
-        "SlotWasSetSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/FluffyType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/TentacledMapping"
-                },
-                "allowempty": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "type"
-            ],
-            "title": "SlotWasSetSequence"
-        },
-        "TentacledMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "regex;(.*)": {
-                    "$ref": "#/definitions/Commands"
-                }
-            },
-            "required": [
-                "regex;(.*)"
-            ],
-            "title": "TentacledMapping"
-        },
-        "Commands": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/CommandsSequence"
-                    }
-                }
-            },
-            "required": [
-                "type"
-            ],
-            "title": "Commands"
-        },
-        "CommandsSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/StickyMapping"
-                }
-            },
-            "required": [
-                "type"
-            ],
-            "title": "CommandsSequence"
-        },
-        "StickyMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "regex;(.*)": {
-                    "$ref": "#/definitions/Regex"
-                }
-            },
-            "required": [
-                "regex;(.*)"
-            ],
-            "title": "StickyMapping"
-        },
-        "Metadata": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "required": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "required",
-                "type"
-            ],
-            "title": "Metadata"
-        },
-        "PurpleSteps": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/PurpleSequence"
-                    }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "PurpleSteps"
-        },
-        "PurpleSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/IndigoMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "PurpleSequence"
-        },
-        "IndigoMapping": {
-            "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "intent": {
-                    "$ref": "#/definitions/ConversationStart"
+                    "type": "string",
+                    "minLength": 1
                 },
                 "user": {
-                    "$ref": "#/definitions/ConversationStart"
+                    "type": "string",
+                    "minLength": 1
                 },
                 "commands": {
-                    "$ref": "#/definitions/Commands"
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
                 },
                 "entities": {
-                    "$ref": "#/definitions/Entities"
-                },
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                }
+            },
+            "required": [
+                "intent"
+            ]
+        },
+        "activeLoop": {
+            "type": "object",
+            "properties": {
+                "active_loop": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "active_loop"
+            ]
+        },
+        "action": {
+            "type": "object",
+            "properties": {
                 "action": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "active_loop": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "action"
+            ]
+        },
+        "slotWasSet": {
+            "type": "object",
+            "properties": {
                 "slot_was_set": {
-                    "$ref": "#/definitions/SlotWasSet"
-                },
-                "or": {
-                    "$ref": "#/definitions/Or"
-                }
-            },
-            "required": [],
-            "title": "IndigoMapping"
-        },
-        "Entities": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/EntitiesSequence"
+                        "type": "object",
+                        "additionalProperties": true
                     }
                 }
             },
             "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "Entities"
-        },
-        "EntitiesSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/FluffyType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/IndecentMapping"
-                }
-            },
-            "required": [
-                "type"
-            ],
-            "title": "EntitiesSequence"
-        },
-        "IndecentMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "regex;(.*)": {
-                    "$ref": "#/definitions/Regex"
-                },
-                "role": {
-                    "$ref": "#/definitions/Regex"
-                },
-                "group": {
-                    "$ref": "#/definitions/Regex"
-                }
-            },
-            "required": [
-                "group",
-                "regex;(.*)",
-                "role"
-            ],
-            "title": "IndecentMapping"
-        },
-        "Or": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/OrSequence"
-                    }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "Or"
-        },
-        "OrSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/HilariousMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "OrSequence"
-        },
-        "HilariousMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "intent": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "user": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "commands": {
-                    "$ref": "#/definitions/Commands"
-                },
-                "entities": {
-                    "$ref": "#/definitions/Entities"
-                },
-                "slot_was_set": {
-                    "$ref": "#/definitions/SlotWasSet"
-                }
-            },
-            "required": [],
-            "title": "HilariousMapping"
-        },
-        "Stories": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/StoriesSequence"
-                    }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "Stories"
-        },
-        "StoriesSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/AmbitiousMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "StoriesSequence"
-        },
-        "AmbitiousMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "story": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "metadata": {
-                    "$ref": "#/definitions/Metadata"
-                },
-                "steps": {
-                    "$ref": "#/definitions/FluffySteps"
-                }
-            },
-            "required": [
-                "metadata",
-                "steps",
-                "story"
-            ],
-            "title": "AmbitiousMapping"
-        },
-        "FluffySteps": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "matching": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/FluffySequence"
-                    }
-                }
-            },
-            "required": [
-                "matching",
-                "sequence",
-                "type"
-            ],
-            "title": "FluffySteps"
-        },
-        "FluffySequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/CunningMapping"
-                },
-                "matching-rule": {
-                    "$ref": "#/definitions/MatchingEnum"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "FluffySequence"
-        },
-        "CunningMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "intent": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "user": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "commands": {
-                    "$ref": "#/definitions/Commands"
-                },
-                "entities": {
-                    "$ref": "#/definitions/Entities"
-                },
-                "active_loop": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "action": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "bot": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "stack": {
-                    "$ref": "#/definitions/Stack"
-                },
-                "slot_was_set": {
-                    "$ref": "#/definitions/SlotWasSet"
-                },
-                "checkpoint": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "or": {
-                    "$ref": "#/definitions/Or"
-                }
-            },
-            "required": [],
-            "title": "CunningMapping"
-        },
-        "Stack": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/StackType"
-                },
-                "allowempty": {
-                    "type": "boolean"
-                },
-                "sequence": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/StackSequence"
-                    }
-                }
-            },
-            "required": [
-                "allowempty",
-                "sequence",
-                "type"
-            ],
-            "title": "Stack"
-        },
-        "StackSequence": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/PurpleType"
-                },
-                "mapping": {
-                    "$ref": "#/definitions/MagentaMapping"
-                }
-            },
-            "required": [
-                "mapping",
-                "type"
-            ],
-            "title": "StackSequence"
-        },
-        "MagentaMapping": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "op": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "path": {
-                    "$ref": "#/definitions/ConversationStart"
-                },
-                "value": {
-                    "$ref": "#/definitions/Regex"
-                }
-            },
-            "required": [
-                "op",
-                "path",
-                "value"
-            ],
-            "title": "MagentaMapping"
-        },
-        "Version": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": {
-                    "$ref": "#/definitions/MatchingEnum"
-                },
-                "required": {
-                    "type": "boolean"
-                },
-                "allowempty": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "allowempty",
-                "required",
-                "type"
-            ],
-            "title": "Version"
-        },
-        "MatchingEnum": {
-            "type": "string",
-            "enum": [
-                "any",
-                "text",
-                "bool",
-                "str"
-            ],
-            "title": "MatchingEnum"
-        },
-        "PurpleType": {
-            "type": "string",
-            "enum": [
-                "map",
-                "text"
-            ],
-            "title": "PurpleType"
-        },
-        "StackType": {
-            "type": "string",
-            "enum": [
-                "text",
-                "bool",
-                "seq"
-            ],
-            "title": "StackType"
-        },
-        "FluffyType": {
-            "type": "string",
-            "enum": [
-                "map",
-                "str"
-            ],
-            "title": "FluffyType"
+                "slot_was_set"
+            ]
         }
     }
 }
