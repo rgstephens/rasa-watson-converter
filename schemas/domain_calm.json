@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "actions": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "object",
+                        "patternProperties": {
+                            "^regex;([A-Za-z]+)$": {
+                                "type": "object",
+                                "properties": {
+                                    "send_domain": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "responses": {
+            "type": "object"
+        },
+        "slots": {
+            "type": "object",
+            "patternProperties": {
+                "^regex;([A-Za-z]+)$": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["text", "bool", "categorical", "float", "any"]
+                        },
+                        "min_value": {
+                            "type": "number"
+                        },
+                        "max_value": {
+                            "type": "number"
+                        },
+                        "initial_value": {}
+                    },
+                    "additionalProperties": false,
+                    "dependencies": {
+                        "values": ["categorical"]
+                    }
+                }
+            }
+        },
+        "session_config": {
+            "type": "object",
+            "properties": {
+                "session_expiration_time": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "carry_over_slots_to_new_session": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        }
+    }
+}
